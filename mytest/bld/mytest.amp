@@ -1,0 +1,147 @@
+Modules list:
+-------------
+mytest.o:
+    CODE              Offs = 000000   Size = 000083
+    RODATA            Offs = 000000   Size = 000020
+    BSS               Offs = 000000   Size = 000000
+    DATA              Offs = 000000   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+chars.o:
+    CODE              Offs = 000083   Size = 000000
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000000   Size = 000000
+    DATA              Offs = 000000   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+    CHARS             Offs = 000000   Size = 002000
+D:\Soft\cc65\lib\nes.lib(crt0.o):
+    CODE              Offs = 000083   Size = 000000
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000000   Size = 000000
+    DATA              Offs = 000000   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+    HEADER            Offs = 000000   Size = 000010
+    STARTUP           Offs = 000000   Size = 00005D
+    VECTORS           Offs = 000000   Size = 00000C
+    CHARS             Offs = 002000   Size = 001000
+D:\Soft\cc65\lib\nes.lib(ppubuf.o):
+    CODE              Offs = 000083   Size = 0000B0
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000000   Size = 000001
+    DATA              Offs = 000000   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+D:\Soft\cc65\lib\nes.lib(copydata.o):
+    CODE              Offs = 000133   Size = 00002D
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000001   Size = 000000
+    DATA              Offs = 000000   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+D:\Soft\cc65\lib\nes.lib(zerobss.o):
+    CODE              Offs = 000160   Size = 000000
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000001   Size = 000000
+    DATA              Offs = 000000   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+    INIT              Offs = 000000   Size = 000023
+D:\Soft\cc65\lib\nes.lib(addysp.o):
+    CODE              Offs = 000160   Size = 00000E
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000001   Size = 000000
+    DATA              Offs = 000000   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+D:\Soft\cc65\lib\nes.lib(callmain.o):
+    CODE              Offs = 00016E   Size = 000017
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000001   Size = 000004
+    DATA              Offs = 000000   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+D:\Soft\cc65\lib\nes.lib(condes.o):
+    CODE              Offs = 000185   Size = 00000C
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000005   Size = 000000
+    DATA              Offs = 000000   Size = 000025
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+    INIT              Offs = 000023   Size = 00000C
+D:\Soft\cc65\lib\nes.lib(decsp3.o):
+    CODE              Offs = 000191   Size = 00000D
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000005   Size = 000000
+    DATA              Offs = 000025   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+D:\Soft\cc65\lib\nes.lib(incax1.o):
+    CODE              Offs = 00019E   Size = 000007
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000005   Size = 000000
+    DATA              Offs = 000025   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+D:\Soft\cc65\lib\nes.lib(incsp3.o):
+    CODE              Offs = 0001A5   Size = 000005
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000005   Size = 000000
+    DATA              Offs = 000025   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+D:\Soft\cc65\lib\nes.lib(ldaui.o):
+    CODE              Offs = 0001AA   Size = 000009
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000005   Size = 000000
+    DATA              Offs = 000025   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+D:\Soft\cc65\lib\nes.lib(ldaxsp.o):
+    CODE              Offs = 0001B3   Size = 000009
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000005   Size = 000000
+    DATA              Offs = 000025   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+D:\Soft\cc65\lib\nes.lib(pushax.o):
+    CODE              Offs = 0001BC   Size = 00001A
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000005   Size = 000000
+    DATA              Offs = 000025   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+D:\Soft\cc65\lib\nes.lib(staxsp.o):
+    CODE              Offs = 0001D6   Size = 00000B
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000005   Size = 000000
+    DATA              Offs = 000025   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 000000
+    NULL              Offs = 000000   Size = 000000
+D:\Soft\cc65\lib\nes.lib(zeropage.o):
+    CODE              Offs = 0001E1   Size = 000000
+    RODATA            Offs = 000020   Size = 000000
+    BSS               Offs = 000005   Size = 000000
+    DATA              Offs = 000025   Size = 000000
+    ZEROPAGE          Offs = 000000   Size = 00001A
+    NULL              Offs = 000000   Size = 000000
+    EXTZP             Offs = 000000   Size = 000000
+
+
+Segment list:
+-------------
+Name                  Start   End     Size
+--------------------------------------------
+CHARS                 000000  002FFF  003000
+EXTZP                 000000  000000  000000
+HEADER                000000  00000F  000010
+NULL                  000000  000000  000000
+ZEROPAGE              000002  00001B  00001A
+DATA                  006000  006024  000025
+BSS                   006025  006029  000005
+STARTUP               008000  00805C  00005D
+INIT                  00805D  00808C  000030
+CODE                  00808D  00826D  0001E1
+RODATA                00826E  00828D  000020
+VECTORS               00FFF6  010001  00000C

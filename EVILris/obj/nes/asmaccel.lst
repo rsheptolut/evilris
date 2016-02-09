@@ -1,0 +1,587 @@
+ca65 V2.13.9 - (C) Copyright 1998-2011 Ullrich von Bassewitz
+Main file   : src/asmaccel.s
+Current file: src/asmaccel.s
+
+000000r 1                   .autoimport	on
+000000r 1                   .case       on
+000000r 1                   .debuginfo  off
+000000r 1                   .importzp   ptr1, ptr2
+000000r 1                   .importzp   tmp1, tmp2, tmp3, tmp4
+000000r 1                   .import     _wait_vblank
+000000r 1               
+000000r 1               ; Defines that must match those in tetris.h
+000000r 1                   .define SCR_GAME_PART_SIZE 10
+000000r 1                   .define SCR_GAME_PART_LEFT 8
+000000r 1                   .define SCR_GAME_PART_Y 0
+000000r 1                   .define SCR_GAME_PART_HEIGHT 24
+000000r 1                   .define SCR_GAME_PART_HEIGHT_RESERVE 4
+000000r 1               
+000000r 1               
+000000r 1               ; ---------------------------------------------------------------
+000000r 1               ; void blit_board(unsigned char *board, unsigned char *screenpos)
+000000r 1               ; Copy the board array onto the screen at the offset provided
+000000r 1               ; Widths and heights are defined as constants above
+000000r 1               ; ---------------------------------------------------------------
+000000r 1               
+000000r 1               .segment        "CODE"
+000000r 1               
+000000r 1               ; void draw_tetramino_at_playfield(byte * tetramino_ptr, byte x, byte y);
+000000r 1               
+000000r 1               .export _draw_tetramino_at_playfield
+000000r 1               .proc	_draw_tetramino_at_playfield
+000000r 1               
+000000r 1  20 rr rr         jsr     popa         ; tetra_y
+000003r 1  85 rr            sta     tmp4
+000005r 1               
+000005r 1  20 rr rr         jsr     popa         ; tetra_x
+000008r 1  85 rr            sta     tmp3
+00000Ar 1               
+00000Ar 1  20 rr rr         jsr     popax        ; tetramino_ptr
+00000Dr 1  85 rr            sta     ptr1
+00000Fr 1  86 rr            stx     ptr1+1
+000011r 1               
+000011r 1  A2 04            ldx     #$4
+000013r 1  A0 FF            ldy     #$FF
+000015r 1               
+000015r 1               	; assume y = 0
+000015r 1               DRAWBLOCK:
+000015r 1               
+000015r 1  C8               iny                         ; first y is 0, look at the code!
+000016r 1  B1 rr            lda     (ptr1), y           ; getting the y coordinate of a block into the a
+000018r 1  18               clc
+000019r 1  65 rr            adc     tmp4                ; adding the y coordinate of a tetermino
+00001Br 1  18               clc
+00001Cr 1  C9 04        	cmp		#$4                 ; if the resulting y coordinate of a block is less than 4, we don't draw it
+00001Er 1  10 04        	bpl     :+
+000020r 1  C8           	iny
+000021r 1  4C rr rr     	jmp     NEXTBLOCK
+000024r 1               :
+000024r 1  18           	clc                         ; adding the size of a screen frame to y coordinate
+000025r 1  69 00            adc     #SCR_GAME_PART_Y
+000027r 1  85 rr            sta     tmp2
+000029r 1               
+000029r 1  C8               iny
+00002Ar 1  B1 rr            lda     (ptr1), y           ; loading x offset of a block in tetranimo
+00002Cr 1  65 rr            adc     tmp3                ; adding tetra_x to it
+00002Er 1  18               clc
+00002Fr 1  69 08            adc     #SCR_GAME_PART_LEFT ; adding the size of a screen frame to x coordinate
+000031r 1  85 rr            sta     tmp1
+000033r 1               
+000033r 1  A5 rr            lda     tmp2                ; calculating HI address = $20 + Y / 8
+000035r 1  4A               lsr     a
+000036r 1  4A               lsr     a
+000037r 1  4A               lsr     a
+000038r 1  09 20            ora     #$20
+00003Ar 1  8D 06 20         sta     $2006               ; storing HI Address
+00003Dr 1               
+00003Dr 1  A5 rr            lda     tmp2                ; calculating LO address = Y * 32 + X
+00003Fr 1  0A               asl     a
+000040r 1  0A               asl     a
+000041r 1  0A               asl     a
+000042r 1  0A               asl     a
+000043r 1  0A               asl     a
+000044r 1  05 rr            ora     tmp1
+000046r 1  8D 06 20         sta     $2006               ; storing LO address
+000049r 1               
+000049r 1  A9 01            lda     #1
+00004Br 1  8D 07 20         sta     $2007
+00004Er 1               
+00004Er 1               NEXTBLOCK:
+00004Er 1  CA               dex
+00004Fr 1  D0 C4            bne     DRAWBLOCK
+000051r 1               
+000051r 1  60               rts                       ; Params stack is already correct
+000052r 1               
+000052r 1               .endproc
+000052r 1               
+000052r 1               ; void place_tetramino(byte * tetramino_ptr, byte * playfield_ptr, byte tetra_x, byte tetra_y);
+000052r 1               
+000052r 1               .export _place_tetramino
+000052r 1               .proc	_place_tetramino
+000052r 1               
+000052r 1  20 rr rr         jsr     popa    ; Сохраняем tetra_y
+000055r 1  85 rr            sta     tmp2
+000057r 1               
+000057r 1  20 rr rr         jsr     popa    ; Сохраняем tetra_x
+00005Ar 1  85 rr            sta     tmp1
+00005Cr 1               
+00005Cr 1  20 rr rr         jsr     popax   ; Сохраняем playfield_ptr
+00005Fr 1  85 rr            sta     ptr2
+000061r 1  86 rr            stx     ptr2+1
+000063r 1               
+000063r 1  20 rr rr         jsr     popax   ; Сохраняем tetramino_ptr
+000066r 1  85 rr            sta     ptr1
+000068r 1  86 rr            stx     ptr1+1
+00006Ar 1               
+00006Ar 1  A2 00            ldx     #$0     ; Начинаем с нулевого блока (всего будет 4)
+00006Cr 1               
+00006Cr 1               SETBLOCK:
+00006Cr 1               
+00006Cr 1  8A               txa                 ;
+00006Dr 1  0A               asl     a           ;
+00006Er 1  A8               tay                 ; Y = X * 2
+00006Fr 1  B1 rr            lda     (ptr1), y   ; A = tetramino_ptr[Y]
+000071r 1  18               clc
+000072r 1  65 rr            adc     tmp2        ; A = A + tetra_y (final_y)
+000074r 1               
+000074r 1  0A               asl     a           ; A = final_y * 2
+000075r 1  85 rr            sta     tmp3        ; TMP3 = final_y * 2
+000077r 1               
+000077r 1  0A               asl     a           ; A = A * 2
+000078r 1  0A               asl     a           ; A = A * 2 (= final_y * 8)
+000079r 1               
+000079r 1  18               clc
+00007Ar 1  65 rr            adc     tmp3        ; A = (final_y * 8) + TMP3 = (final_y * 8) + (final_y * 2) = final_y * 10
+00007Cr 1               
+00007Cr 1  C8               iny
+00007Dr 1  71 rr            adc     (ptr1), y   ; A = (final_y * 10) + tetramino_ptr[Y + 1] = (final_y * 10) + block_x
+00007Fr 1  65 rr            adc     tmp1        ; A = (final_y * 10) + block_x + tetra_x = final_y * 10 + final_x = offset
+000081r 1               
+000081r 1  A8               tay                 ; Перенесем offset в y
+000082r 1               
+000082r 1  A9 01            lda     #$1
+000084r 1  91 rr            sta     (ptr2), y   ; playfield_ptr[offset] = 1
+000086r 1               
+000086r 1  E8               inx
+000087r 1  E0 04            cpx     #$4         ; LOOP UNTIL X = 4
+000089r 1  D0 E1            bne     SETBLOCK    ;
+00008Br 1               
+00008Br 1  60               rts                 ; Params stack is already correct
+00008Cr 1               
+00008Cr 1               .endproc
+00008Cr 1               
+00008Cr 1               ; void clear_nt0(void);
+00008Cr 1               .export _clear_nt0
+00008Cr 1               .proc	_clear_nt0
+00008Cr 1               
+00008Cr 1  A9 20            lda     #$20        ; Начинаем с адреса видеопамяти $2000 (Nametable 0)
+00008Er 1  8D 06 20         sta     $2006
+000091r 1  A9 00            lda     #$00
+000093r 1  8D 06 20         sta     $2006
+000096r 1               
+000096r 1  A9 00            lda     #$0         ; Будем писать нули
+000098r 1  A8               tay                 ; Начинаем итерацию также с нуля
+000099r 1  A2 04            ldx     #$4         ; Всего будет записано $400 байт: offset(HIBYTE - x, LOBYTE - y)
+00009Br 1               
+00009Br 1               :
+00009Br 1  8D 07 20         sta     $2007       ; Пишем ноль в видеопамять
+00009Er 1  88               dey                 ; Декрементируем Y
+00009Fr 1  D0 FA            bne     :-          ; (0x100 раз)
+0000A1r 1  CA               dex                 ; Декрементируем X
+0000A2r 1  D0 F7            bne     :-          ; (0x4 раза)
+0000A4r 1               
+0000A4r 1  8D 06 20         sta     $2006       ; Сбрасываем адрес PPU
+0000A7r 1  8D 06 20         sta     $2006
+0000AAr 1               
+0000AAr 1  60               rts
+0000ABr 1               .endproc
+0000ABr 1               
+0000ABr 1               ; void clear_playfield(byte * playfield_ptr);
+0000ABr 1               .export _clear_playfield
+0000ABr 1               .proc	_clear_playfield
+0000ABr 1               
+0000ABr 1  20 rr rr         jsr     popax      ; Получаем playfield_ptr
+0000AEr 1  85 rr            sta     ptr1
+0000B0r 1  86 rr            stx     ptr1+1
+0000B2r 1               
+0000B2r 1  A9 00            lda     #0;         ; A = 0
+0000B4r 1  A8               tay;               ; Y = 0
+0000B5r 1  A2 F0            ldx     #(SCR_GAME_PART_HEIGHT * SCR_GAME_PART_SIZE)       ; [For X = 240 downto 1]
+0000B7r 1               :
+0000B7r 1  91 rr            sta     (ptr1),y   ; Записываем 0 в текущую ячейку массива
+0000B9r 1  C8               iny                ; Переходим на следующую ячейку
+0000BAr 1  CA               dex                ; Засчитываем итерацию цикла (наверное быстрее чем каждый раз Y с 240 сравнивать)
+0000BBr 1  D0 FA            bne     :-         ; [Next]
+0000BDr 1               
+0000BDr 1  60               rts
+0000BEr 1               
+0000BEr 1               
+0000BEr 1               .endproc
+0000BEr 1               
+0000BEr 1               .export _delay
+0000BEr 1               .proc _delay
+0000BEr 1  20 rr rr     	jsr	popax                ; a = LOBYTE(amount); x = HIBYTE(amount);
+0000C1r 1               
+0000C1r 1  85 rr        	sta tmp1                 ; tmp1 = a;
+0000C3r 1  8A           	txa                      ; a = x;
+0000C4r 1  A2 00        	ldx #0                   ; x = 0;
+0000C6r 1  A8           	tay                      ; y = a;
+0000C7r 1               
+0000C7r 1               	; tmp1 - lo byte of delay, y - hi byte of delay, x - 0
+0000C7r 1               
+0000C7r 1  D0 03        	bne :+                   ; if (amount_hi == 0)
+0000C9r 1  4C rr rr     	jmp :++
+0000CCr 1               :
+0000CCr 1  CA           	dex                      ; x--;
+0000CDr 1  D0 FD        	bne :-                   ; if (x == 0) goto -1;
+0000CFr 1               
+0000CFr 1  A2 00        	ldx #0                   ; x = 0;
+0000D1r 1  88           	dey                      ; y--;
+0000D2r 1  D0 F8        	bne :-                   ; if (y == 0) goto -1;
+0000D4r 1               :
+0000D4r 1  A6 rr        	ldx tmp1                 ; x = amount_lo;
+0000D6r 1               :
+0000D6r 1  CA           	dex
+0000D7r 1  D0 FD        	bne :-
+0000D9r 1               
+0000D9r 1  60           	rts
+0000DAr 1               .endproc
+0000DAr 1               
+0000DAr 1               .export _delay_ms
+0000DAr 1               .proc _delay_ms
+0000DAr 1  20 rr rr     	jsr	popax                ; a = LOBYTE(amount); x = HIBYTE(amount);
+0000DDr 1               
+0000DDr 1  85 rr        	sta tmp1                 ; tmp1 = a;
+0000DFr 1  8A           	txa                      ; a = x;
+0000E0r 1  A2 00        	ldx #0                   ; x = 0;
+0000E2r 1  A8           	tay                      ; y = a;
+0000E3r 1               
+0000E3r 1               	; tmp1 - lo byte of delay, y - hi byte of delay, x - 0
+0000E3r 1               
+0000E3r 1  D0 03        	bne :+                   ; if (amount_hi == 0)
+0000E5r 1  4C rr rr     	jmp :++
+0000E8r 1               :
+0000E8r 1  8A           	txa
+0000E9r 1  A2 00        	ldx #0
+0000EBr 1               :
+0000EBr 1  18               clc
+0000ECr 1  CA           	dex
+0000EDr 1  D0 FC        	bne :-
+0000EFr 1  AA           	tax
+0000F0r 1  CA           	dex                      ; x--;
+0000F1r 1  D0 F5        	bne :--                  ; if (x == 0) goto -1;
+0000F3r 1               
+0000F3r 1  A2 00        	ldx #0                   ; x = 0;
+0000F5r 1  88           	dey                      ; y--;
+0000F6r 1  D0 F0        	bne :--                  ; if (y == 0) goto -1;
+0000F8r 1               :
+0000F8r 1  A6 rr        	ldx tmp1                 ; x = amount_lo;
+0000FAr 1               :
+0000FAr 1  8A           	txa
+0000FBr 1  A2 00        	ldx #0
+0000FDr 1               :
+0000FDr 1  18               clc
+0000FEr 1  CA           	dex
+0000FFr 1  D0 FC        	bne :-
+000101r 1  AA           	tax
+000102r 1  CA           	dex                      ; x--
+000103r 1  D0 F5        	bne :--
+000105r 1               
+000105r 1  60           	rts
+000106r 1               .endproc
+000106r 1               
+000106r 1               ; Быстрое копирование памяти по указателю в ptr1 длиной в tmp1 (максимум 256 байт, если tmp=0)
+000106r 1               .proc _ppu_write_fast
+000106r 1               
+000106r 1  A0 00            ldy     #0          ; Обнуляем y
+000108r 1               
+000108r 1               :                       ; <Цикл Y>
+000108r 1  B1 rr            lda     (ptr1), y   ; Берем очередной байт данных из источника
+00010Ar 1  8D 07 20         sta     $2007       ; записываем его в видеопамять
+00010Dr 1  C8               iny                 ; Инкрементируем y
+00010Er 1  C4 rr            cpy     tmp1        ; Сравниваем с tmp1
+000110r 1  D0 F6            bne     :-          ; </Цикл Y>
+000112r 1               
+000112r 1  60               rts
+000113r 1               .endproc
+000113r 1               
+000113r 1               ; extern void _ppu_write(word length, word dest, byte * source);
+000113r 1               .export _ppu_write
+000113r 1               .proc _ppu_write
+000113r 1               
+000113r 1  20 rr rr         jsr     popax      ; Получаем source
+000116r 1  85 rr            sta     ptr1
+000118r 1  86 rr            stx     ptr1+1
+00011Ar 1               
+00011Ar 1  20 rr rr         jsr     popax      ; Получаем dest
+00011Dr 1  8E 06 20         stx     $2006      ; Пишем старший байт в регистр видеопроцессора
+000120r 1  8D 06 20         sta     $2006      ; Пишем младший байт в регистр видеопроцессора
+000123r 1               
+000123r 1  20 rr rr         jsr     popax       ; Получаем length
+000126r 1  85 rr            sta     tmp1        ; Сохраняем младший байт в tmp1
+000128r 1  E8               inx                 ; Старший байт у нас в X, и увеличим ка мы его на 1 (?!?!)
+000129r 1               
+000129r 1  A0 00            ldy     #0          ; Итерация в пределах 256 байт начинается
+00012Br 1  84 rr            sty     tmp2        ; заодно обнулим значение с которым будет сравнена y (по умолчанию 256 байт)
+00012Dr 1               :                       ; <Цикл X><Цикл Y>
+00012Dr 1  E0 01            cpx     #1          ; Если X <> 1 (а значит имеется в виду старший разряд 0)
+00012Fr 1  D0 04            bne     :+          ; то идем на :
+000131r 1  A5 rr            lda     tmp1        ; А иначе, копируем младший разряд length в tmp2
+000133r 1  85 rr            sta     tmp2
+000135r 1               :
+000135r 1  B1 rr            lda     (ptr1), y   ; Берем очередной байт данных из источника
+000137r 1  8D 07 20         sta     $2007       ; записываем его в видеопамять
+00013Ar 1  C8               iny                 ; Инкрементируем y
+00013Br 1  C4 rr            cpy     tmp2        ; Сравниваем с tmp2 (256 или меньше, если это последняя итерация по x)
+00013Dr 1  D0 F6            bne     :-          ; </Цикл Y>
+00013Fr 1  E6 rr            inc     ptr1+1      ; Инкрементируем старший разряд в указателе источника
+000141r 1  CA               dex                 ; Декрементируем x
+000142r 1  D0 E9            bne     :--         ; </Цикл X>
+000144r 1               
+000144r 1  60               rts
+000145r 1               .endproc
+000145r 1               
+000145r 1               .proc position_at_tmp1_and_scr_game_part_left
+000145r 1  A5 rr          lda tmp1
+000147r 1  4A             lsr a                  ; block_y >> 3 (cause low ppu address has 3 bits for "y" left from 5 bits of "x")
+000148r 1  4A             lsr a
+000149r 1  4A             lsr a
+00014Ar 1  09 20          ora #$20               ; add $20 to result (cause NT0 starts at $2000)
+00014Cr 1  8D 06 20       sta $2006              ; store HI vram address
+00014Fr 1               
+00014Fr 1  A5 rr          lda tmp1               ; load block_y
+000151r 1  0A             asl a                  ; block_y * 32 (cause max x is 31)
+000152r 1  0A             asl a
+000153r 1  0A             asl a
+000154r 1  0A             asl a
+000155r 1  0A             asl a
+000156r 1  09 08          ora #SCR_GAME_PART_LEFT ; block_y + 10
+000158r 1  8D 06 20       sta $2006              ; store LO vram address
+00015Br 1               
+00015Br 1  60             rts
+00015Cr 1               .endproc
+00015Cr 1               
+00015Cr 1               ; extern void blit_playfield(byte * playfield_ptr);
+00015Cr 1               .export _blit_playfield
+00015Cr 1               .proc _blit_playfield
+00015Cr 1               
+00015Cr 1  20 rr rr       jsr popax              ; Получаем source
+00015Fr 1  85 rr          sta ptr1
+000161r 1  86 rr          stx ptr1 + 1
+000163r 1               
+000163r 1  A9 04          lda #(SCR_GAME_PART_Y + SCR_GAME_PART_HEIGHT_RESERVE)
+000165r 1  85 rr          sta tmp1               ; block_y = 4
+000167r 1               
+000167r 1  A0 00          ldy #0                  ; playfield_offset = 0
+000169r 1  84 rr          sty tmp2
+00016Br 1               :                        ; <Цикл block_y (20)>
+00016Br 1  A2 0A          ldx #(SCR_GAME_PART_SIZE) ; block_x = 10;
+00016Dr 1               
+00016Dr 1  20 rr rr       jsr position_at_tmp1_and_scr_game_part_left
+000170r 1               
+000170r 1               :                       ; <Цикл X (10)>
+000170r 1  B1 rr          lda (ptr1),y        ; write next byte
+000172r 1  8D 07 20       sta $2007             ;
+000175r 1  C8             iny                   ; inc playfield_offset
+000176r 1  CA             dex                   ; dec count (10 times)
+000177r 1               
+000177r 1  D0 F7          bne :-                ; </Цикл X>
+000179r 1               
+000179r 1  E6 rr          inc tmp2
+00017Br 1  A5 rr          lda tmp2
+00017Dr 1  C9 08          cmp #8
+00017Fr 1  D0 0D          bne :+
+000181r 1  A9 00          lda #0
+000183r 1  8D 06 20       sta $2006
+000186r 1  8D 06 20       sta $2006
+000189r 1  85 rr          sta tmp2
+00018Br 1  20 rr rr       jsr _wait_vblank
+00018Er 1               :
+00018Er 1  E6 rr          inc tmp1              ; inc block_y
+000190r 1  A5 rr          lda tmp1              ; load it
+000192r 1                 ; compare it to 24
+000192r 1  C9 18          cmp #(SCR_GAME_PART_HEIGHT + SCR_GAME_PART_Y)
+000194r 1  D0 D5          bne :---               ; </Цикл block_y>
+000196r 1               
+000196r 1  60             rts            ; Возврат из процедуры
+000197r 1               .endproc
+000197r 1               
+000197r 1               ; extern void _clear_marked_lines_in_playfield(byte * playfield_ptr;
+000197r 1               ;   byte * lines_to_clear_ptr)
+000197r 1               .export _clear_marked_lines_in_playfield
+000197r 1               .proc _clear_marked_lines_in_playfield
+000197r 1  20 rr rr       jsr popax              ; Получаем lines_to_clear_ptr
+00019Ar 1  85 rr          sta ptr1
+00019Cr 1  86 rr          stx ptr1 + 1
+00019Er 1               
+00019Er 1  20 rr rr       jsr popax              ; Получаем playfield_ptr
+0001A1r 1  85 rr          sta ptr2
+0001A3r 1  86 rr          stx ptr2 + 1
+0001A5r 1               
+0001A5r 1  A2 17          ldx #(SCR_GAME_PART_HEIGHT - 1) ; Начинаем с последней строки
+0001A7r 1  86 rr          stx tmp1               ; tmp1 = Строка-источник
+0001A9r 1  86 rr          stx tmp2               ; tmp2 = Строка-приемник
+0001ABr 1               
+0001ABr 1               NextLine:
+0001ABr 1               
+0001ABr 1  A4 rr          ldy tmp1               ;
+0001ADr 1  B1 rr          lda (ptr1), y          ;
+0001AFr 1  F0 05          beq Move               ; if (lines_to_clear[tmp1] == 0) goto Move;
+0001B1r 1  C6 rr          dec tmp1               ; else Dec(tmp1);
+0001B3r 1  4C rr rr       jmp NextLine           ; Continue;
+0001B6r 1               
+0001B6r 1               Move:
+0001B6r 1  A5 rr          lda tmp1
+0001B8r 1  C5 rr          cmp tmp2
+0001BAr 1  F0 29          beq SkipLine           ; if (tmp1 == tmp2) then goto SkipLine
+0001BCr 1               
+0001BCr 1  A5 rr          lda tmp1
+0001BEr 1  0A             asl a
+0001BFr 1  85 rr          sta tmp3
+0001C1r 1  0A             asl a
+0001C2r 1  0A             asl a
+0001C3r 1  18             clc
+0001C4r 1  65 rr          adc tmp3
+0001C6r 1  85 rr          sta tmp3               ; tmp3 = tmp1 * 10
+0001C8r 1               
+0001C8r 1  A5 rr          lda tmp2
+0001CAr 1  0A             asl a
+0001CBr 1  85 rr          sta tmp4
+0001CDr 1  0A             asl a
+0001CEr 1  0A             asl a
+0001CFr 1  18             clc
+0001D0r 1  65 rr          adc tmp4
+0001D2r 1  85 rr          sta tmp4               ; tmp4 = tmp2 * 10
+0001D4r 1               
+0001D4r 1  A2 0A          ldx #(SCR_GAME_PART_SIZE) ; For X = 10 downto 1
+0001D6r 1               
+0001D6r 1               NextBlock:
+0001D6r 1  A4 rr          ldy tmp3               ; load byte from source line
+0001D8r 1  B1 rr          lda (ptr2), y
+0001DAr 1  E6 rr          inc tmp3
+0001DCr 1               
+0001DCr 1  A4 rr          ldy tmp4               ; store byte at dest line
+0001DEr 1  91 rr          sta (ptr2), y
+0001E0r 1  E6 rr          inc tmp4
+0001E2r 1  CA             dex
+0001E3r 1  D0 F1          bne NextBlock
+0001E5r 1               
+0001E5r 1               SkipLine:
+0001E5r 1  C6 rr          dec tmp2
+0001E7r 1  C6 rr          dec tmp1
+0001E9r 1  A5 rr          lda tmp1
+0001EBr 1  C9 FF          cmp #$FF
+0001EDr 1  D0 BC          bne NextLine
+0001EFr 1               
+0001EFr 1  60             rts
+0001F0r 1               .endproc
+0001F0r 1               
+0001F0r 1               ; extern void animate_lines_to_clear(byte * src_data, byte * lines_to_clear_ptr);
+0001F0r 1               .export _animate_lines_to_clear
+0001F0r 1               .proc _animate_lines_to_clear
+0001F0r 1  20 rr rr       jsr popax              ; Получаем lines_to_clear_ptr
+0001F3r 1  85 rr          sta ptr1
+0001F5r 1  86 rr          stx ptr1 + 1
+0001F7r 1               
+0001F7r 1  20 rr rr       jsr popax              ; Получаем src_data (тоже указатель)
+0001FAr 1  85 rr          sta ptr2
+0001FCr 1  86 rr          stx ptr2 + 1
+0001FEr 1               
+0001FEr 1  A0 17          ldy #(SCR_GAME_PART_HEIGHT - 1) ; Начнем с последней строки поля
+000200r 1  84 rr          sty tmp1               ; tmp1 = block_y
+000202r 1               
+000202r 1               NextLine:
+000202r 1  B1 rr          lda (ptr1), y          ; if (lines_to_clear[block_y] == 0) goto SkipLine
+000204r 1  F0 0F          beq SkipLine
+000206r 1               
+000206r 1  20 rr rr       jsr position_at_tmp1_and_scr_game_part_left ; store HI(vram_addr) and LO(vram_addr)
+000209r 1               
+000209r 1  A0 00          ldy #0                 ; start copying from 0
+00020Br 1               :
+00020Br 1  B1 rr          lda (ptr2), y          ; copy next byte from source to vram
+00020Dr 1  8D 07 20       sta $2007
+000210r 1  C8             iny
+000211r 1  C0 0A          cpy #(SCR_GAME_PART_SIZE) ; copy total of 10 bytes
+000213r 1  D0 F6          bne :-
+000215r 1               
+000215r 1               SkipLine:
+000215r 1  C6 rr          dec tmp1               ; cycling until block_y = 4
+000217r 1  A4 rr          ldy tmp1
+000219r 1  C0 04          cpy #(SCR_GAME_PART_HEIGHT_RESERVE)
+00021Br 1  D0 E5          bne NextLine
+00021Dr 1               
+00021Dr 1  60             rts
+00021Er 1               .endproc
+00021Er 1               
+00021Er 1               ; extern byte find_lines_to_clear(byte * playfield_ptr, byte * lines_to_clear_ptr)
+00021Er 1               .export _find_lines_to_clear
+00021Er 1               .proc _find_lines_to_clear
+00021Er 1               
+00021Er 1  20 rr rr       jsr popax              ; Получаем lines_to_clear_ptr
+000221r 1  85 rr          sta ptr1
+000223r 1  86 rr          stx ptr1 + 1
+000225r 1               
+000225r 1  20 rr rr       jsr popax              ; Получаем playfield_ptr
+000228r 1  85 rr          sta ptr2
+00022Ar 1  86 rr          stx ptr2 + 1
+00022Cr 1               
+00022Cr 1  A2 00          ldx #0
+00022Er 1  86 rr          stx tmp1               ; lines_to_clear index
+000230r 1  86 rr          stx tmp2               ; playfield_ptr index
+000232r 1  86 rr          stx tmp3
+000234r 1               
+000234r 1               NextLine:
+000234r 1  A2 0A          ldx #10                ; for x = 1 to 10
+000236r 1  A4 rr          ldy tmp2               ; y = playfield_ptr index
+000238r 1               :
+000238r 1  B1 rr          lda (ptr2), y          ; if (playfield_ptr[y] == 0) goto NotFilled
+00023Ar 1  F0 07          beq NotFilled
+00023Cr 1  C8             iny                    ; y++
+00023Dr 1  CA             dex                    ;
+00023Er 1  D0 F8          bne :-                 ; Next X
+000240r 1  4C rr rr       jmp SaveResults
+000243r 1               
+000243r 1               NotFilled:
+000243r 1  C8             iny
+000244r 1  CA             dex
+000245r 1  D0 FC          bne NotFilled
+000247r 1               
+000247r 1               SaveResults:
+000247r 1  84 rr          sty tmp2               ; saving y back in playfield_ptr index
+000249r 1  A4 rr          ldy tmp1               ; y = lines_to_clear index
+00024Br 1  91 rr          sta (ptr1), y          ; lines_to_clear[y] = 0 if _any_ a was 0, or 1 if _all_ a was 1
+00024Dr 1  E6 rr          inc tmp3
+00024Fr 1               
+00024Fr 1  E6 rr          inc tmp1               ; lines_to_clear_index++
+000251r 1  A5 rr          lda tmp1
+000253r 1  C9 18          cmp #(SCR_GAME_PART_HEIGHT)
+000255r 1  D0 DD          bne NextLine           ; Next lines_to_clear_index (Until 24)
+000257r 1               
+000257r 1  A5 rr          lda tmp3
+000259r 1  60             rts
+00025Ar 1               
+00025Ar 1               .endproc
+00025Ar 1               
+00025Ar 1               ; extern void display_rle_nt(byte * data_ptr, word record_count);
+00025Ar 1               .export _display_rle_nt
+00025Ar 1               .proc _display_rle_nt
+00025Ar 1  20 rr rr     	jsr popax
+00025Dr 1  85 rr        	sta tmp1           ; record_count
+00025Fr 1  86 rr        	stx tmp2           ; HI record_count
+000261r 1  E6 rr        	inc tmp2           ; increment HI part, cause its meaning is (how much times will lesser cycle be executed)
+000263r 1               
+000263r 1  20 rr rr     	jsr popax
+000266r 1  85 rr        	sta ptr1
+000268r 1  86 rr        	stx ptr1 + 1       ; data_ptr
+00026Ar 1               
+00026Ar 1  A9 20        	lda #$20
+00026Cr 1  8D 06 20     	sta $2006
+00026Fr 1  A9 00        	lda #$00
+000271r 1  8D 06 20     	sta $2006          ; set the first byte of the name table 0
+000274r 1               
+000274r 1  A0 00        	ldy #0
+000276r 1               
+000276r 1               NextRecord:
+000276r 1  C8           	iny
+000277r 1  B1 rr        	lda (ptr1), y      ; get the second byte, transfer it to x - it's count
+000279r 1  AA           	tax
+00027Ar 1  88           	dey
+00027Br 1  B1 rr        	lda (ptr1), y      ; get first byte, it's the value - into the a
+00027Dr 1  C8           	iny                ; inc stream pos by 2
+00027Er 1  C8           	iny
+00027Fr 1               NextByte:
+00027Fr 1  8D 07 20     	sta $2007          ; store #a x times
+000282r 1  CA           	dex
+000283r 1  D0 FA        	bne NextByte
+000285r 1               
+000285r 1  C0 00        	cpy #0             ; inc hi order of pointer when we're past 256 bytes
+000287r 1  D0 02        	bne DontIncPointer
+000289r 1  E6 rr        	inc ptr1 + 1
+00028Br 1               DontIncPointer:
+00028Br 1  C6 rr        	dec tmp1           ; dec record_count, repeat until 0
+00028Dr 1  D0 E7        	bne NextRecord
+00028Fr 1  C6 rr        	dec tmp2
+000291r 1  D0 E3        	bne NextRecord
+000293r 1  60           	rts
+000294r 1               .endproc
+000294r 1               

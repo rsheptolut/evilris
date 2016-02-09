@@ -1,0 +1,361 @@
+Modules list:
+-------------
+header.o:
+    HEADER            Offs = 000000   Size = 000008
+main.o:
+    CODE              Offs = 000000   Size = 00150C
+    RODATA            Offs = 000000   Size = 000038
+    BSS               Offs = 000000   Size = 000157
+    DATA              Offs = 000000   Size = 00004A
+asmaccel.o:
+    CODE              Offs = 00150C   Size = 000294
+graphics.o:
+    CODE              Offs = 0017A0   Size = 0003B0
+    CHR               Offs = 000000   Size = 002000
+../knes/knes/knes.lib(addeqsp.o):
+    CODE              Offs = 001B50   Size = 000011
+../knes/knes/knes.lib(addysp.o):
+    CODE              Offs = 001B61   Size = 00000E
+../knes/knes/knes.lib(aslax2.o):
+    CODE              Offs = 001B6F   Size = 00000B
+../knes/knes/knes.lib(aslax4.o):
+    CODE              Offs = 001B7A   Size = 000011
+../knes/knes/knes.lib(asrax1.o):
+    CODE              Offs = 001B8B   Size = 00000A
+../knes/knes/knes.lib(asrax2.o):
+    CODE              Offs = 001B95   Size = 00000F
+../knes/knes/knes.lib(asrax4.o):
+    CODE              Offs = 001BA4   Size = 000019
+../knes/knes/knes.lib(condes.o):
+    CODE              Offs = 001BBD   Size = 00000C
+    DATA              Offs = 00004A   Size = 000025
+    INIT              Offs = 000000   Size = 00000C
+../knes/knes/knes.lib(decsp4.o):
+    CODE              Offs = 001BC9   Size = 00000D
+../knes/knes/knes.lib(decsp5.o):
+    CODE              Offs = 001BD6   Size = 00000D
+../knes/knes/knes.lib(decsp6.o):
+    CODE              Offs = 001BE3   Size = 00000D
+../knes/knes/knes.lib(icmp.o):
+    CODE              Offs = 001BF0   Size = 00002E
+../knes/knes/knes.lib(incsp1.o):
+    CODE              Offs = 001C1E   Size = 000007
+../knes/knes/knes.lib(incsp2.o):
+    CODE              Offs = 001C25   Size = 000016
+../knes/knes/knes.lib(incsp5.o):
+    CODE              Offs = 001C3B   Size = 000005
+../knes/knes/knes.lib(mulax10.o):
+    CODE              Offs = 001C40   Size = 000019
+../knes/knes/knes.lib(mulax3.o):
+    CODE              Offs = 001C59   Size = 000011
+../knes/knes/knes.lib(neg.o):
+    CODE              Offs = 001C6A   Size = 00000E
+../knes/knes/knes.lib(popa.o):
+    CODE              Offs = 001C78   Size = 00000C
+../knes/knes/knes.lib(pusha.o):
+    CODE              Offs = 001C84   Size = 000016
+../knes/knes/knes.lib(pushax.o):
+    CODE              Offs = 001C9A   Size = 00001A
+../knes/knes/knes.lib(shrax1.o):
+    CODE              Offs = 001CB4   Size = 000008
+../knes/knes/knes.lib(staspidx.o):
+    CODE              Offs = 001CBC   Size = 000016
+../knes/knes/knes.lib(subeqsp.o):
+    CODE              Offs = 001CD2   Size = 000015
+../knes/knes/knes.lib(zeropage.o):
+    ZEROPAGE          Offs = 000000   Size = 00001A
+../knes/knes/knes.lib(copydata.o):
+    CODE              Offs = 001CE7   Size = 00002D
+../knes/knes/knes.lib(zerobss.o):
+    INIT              Offs = 00000C   Size = 000023
+../knes/knes/knes.lib(crt0.o):
+    ZEROPAGE          Offs = 00001A   Size = 000005
+    STARTUP           Offs = 000000   Size = 0000C6
+    VECTORS           Offs = 000000   Size = 000006
+../knes/knes/knes.lib(knes.o):
+    CODE              Offs = 001D14   Size = 000027
+../knes/knes/knes.lib(_read_joy.o):
+    CODE              Offs = 001D40   Size = 000076
+    ZEROPAGE          Offs = 00001F   Size = 000003
+
+
+Segment list:
+-------------
+Name                  Start   End     Size
+--------------------------------------------
+CHR                   000000  001FFF  002000
+HEADER                000000  000007  000008
+ZEROPAGE              000000  000021  000022
+DATA                  000300  00036E  00006F
+BSS                   00036F  0004C5  000157
+STARTUP               008000  0080C5  0000C6
+INIT                  0080C6  0080F4  00002F
+CODE                  008100  009EB5  001DB6
+RODATA                009F25  009F5C  000038
+VECTORS               00FFFA  00FFFF  000006
+
+
+Exports list:
+-------------
+__BSS_RUN__               00036F RLA    __BSS_SIZE__              000157 REA    
+__CONSTRUCTOR_COUNT__     000000 REA    __CONSTRUCTOR_TABLE__     009F5D RLA    
+__DATA_LOAD__             009EB6 RLA    __DATA_RUN__              000300 RLA    
+__DATA_SIZE__             00006F REA    __DESTRUCTOR_COUNT__      000000 REA    
+__DESTRUCTOR_TABLE__      009F5D RLA    __RAM_SIZE__              000500 REA    
+__RAM_START__             000300 RLA    __STARTUP__               000001 REA    
+__ZEROPAGE_LOAD__         009F5D RLA    __ZEROPAGE_RUN__          000000 RLA    
+__ZEROPAGE_SIZE__         000022 REA    __nmi_count               00001A RLZ    
+__read_joy0               009E78 RLA    __read_joy1               009E97 RLA    
+_animate_lines_to_clear   0097FC RLA    _blit_playfield           009768 RLA    
+_clear_marked_lines_in_playfield 0097A3 RLA    _clear_nt0                009698 RLA    
+_clear_playfield          0096B7 RLA    _delay                    0096CA RLA    
+_display_rle_nt           009866 RLA    _draw_tetramino_at_playfield 00960C RLA    
+_main                     00928C RLA    _nt_game_screen_rlec      0099D2 RLA    
+_nt_title_screen_rlec     0098A0 RLA    _place_tetramino          00965E RLA    
+_ppu_write                00971F RLA    _read_joy                 009E26 RLA    
+_wait_vblank              009E14 RLA    addeq0sp                  009C50 RLA    
+addysp                    009C62 RLA    aslax2                    009C6F RLA    
+aslax4                    009C7A RLA    asrax1                    009C8B RLA    
+asrax2                    009C95 RLA    asrax4                    009CA4 RLA    
+copydata                  009DE7 RLA    decsp4                    009CC9 RLA    
+decsp5                    009CD6 RLA    decsp6                    009CE3 RLA    
+donelib                   009CBD RLA    incsp1                    009D1E RLA    
+incsp2                    009D2D RLA    incsp5                    009D3B RLA    
+initlib                   0080C6 RLA    mulax10                   009D40 RLA    
+mulax3                    009D59 RLA    negax                     009D6A RLA    
+popa                      009D78 RLA    popax                     009D25 RLA    
+ptr1                      000008 RLZ    ptr2                      00000A RLZ    
+pusha                     009D88 RLA    pusha0                    009D9C RLA    
+pushax                    009D9E RLA    shlax2                    009C6F RLA    
+shlax4                    009C7A RLA    shrax1                    009DB4 RLA    
+sp                        000000 RLZ    sreg                      000002 RLZ    
+staspidx                  009DBC RLA    subeqysp                  009DD4 RLA    
+tmp1                      000010 RLZ    tmp2                      000011 RLZ    
+tmp3                      000012 RLZ    tmp4                      000013 RLZ    
+tosicmp                   009CF2 RLA    zerobss                   0080D2 RLA    
+
+
+
+Imports list:
+-------------
+__BSS_RUN__ ([linker generated]):
+    zerobss.o                 zerobss.s(8)
+__BSS_SIZE__ ([linker generated]):
+    zerobss.o                 zerobss.s(8)
+__CONSTRUCTOR_COUNT__ ([linker generated]):
+    condes.o                  condes.s(18)
+__CONSTRUCTOR_TABLE__ ([linker generated]):
+    condes.o                  condes.s(18)
+__DATA_LOAD__ ([linker generated]):
+    copydata.o                copydata.s(8)
+__DATA_RUN__ ([linker generated]):
+    copydata.o                copydata.s(8)
+__DATA_SIZE__ ([linker generated]):
+    copydata.o                copydata.s(8)
+__DESTRUCTOR_COUNT__ ([linker generated]):
+    condes.o                  condes.s(19)
+__DESTRUCTOR_TABLE__ ([linker generated]):
+    condes.o                  condes.s(19)
+__RAM_SIZE__ ([linker generated]):
+    crt0.o                    crt0.s(5)
+__RAM_START__ ([linker generated]):
+    crt0.o                    crt0.s(5)
+__STARTUP__ (crt0.o):
+    main.o                    src/main.s(13)
+__ZEROPAGE_LOAD__ ([linker generated]):
+    crt0.o                    crt0.s(7)
+__ZEROPAGE_RUN__ ([linker generated]):
+    crt0.o                    crt0.s(7)
+__ZEROPAGE_SIZE__ ([linker generated]):
+    crt0.o                    crt0.s(7)
+__nmi_count (crt0.o):
+    knes.o                    knes.s(1)
+    main.o                    src/main.s(14)
+__read_joy0 (_read_joy.o):
+    knes.o                    knes.s(26)
+__read_joy1 (_read_joy.o):
+    knes.o                    knes.s(27)
+_animate_lines_to_clear (asmaccel.o):
+    main.o                    src/main.s(47)
+_blit_playfield (asmaccel.o):
+    main.o                    src/main.s(48)
+_clear_marked_lines_in_playfield (asmaccel.o):
+    main.o                    src/main.s(49)
+_clear_nt0 (asmaccel.o):
+    main.o                    src/main.s(39)
+_clear_playfield (asmaccel.o):
+    main.o                    src/main.s(38)
+_delay (asmaccel.o):
+    main.o                    src/main.s(51)
+_display_rle_nt (asmaccel.o):
+    main.o                    src/main.s(50)
+_draw_tetramino_at_playfield (asmaccel.o):
+    main.o                    src/main.s(35)
+_main (main.o):
+    crt0.o                    crt0.s(2)
+_nt_game_screen_rlec (graphics.o):
+    main.o                    src/main.s(60)
+_nt_title_screen_rlec (graphics.o):
+    main.o                    src/main.s(61)
+_place_tetramino (asmaccel.o):
+    main.o                    src/main.s(33)
+_ppu_write (asmaccel.o):
+    main.o                    src/main.s(40)
+_read_joy (knes.o):
+    main.o                    src/main.s(16)
+_wait_vblank (knes.o):
+    asmaccel.o                src/asmaccel.s(6)
+    main.o                    src/main.s(15)
+addeq0sp (addeqsp.o):
+    main.o                    src/main.s(3350)
+addysp (addysp.o):
+    incsp5.o                  incsp5.s(8)
+aslax2 (aslax2.o):
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+aslax4 (aslax4.o):
+    main.o                    src/main.s(3350)
+asrax1 (asrax1.o):
+    main.o                    src/main.s(3350)
+asrax2 (asrax2.o):
+    main.o                    src/main.s(3350)
+asrax4 (asrax4.o):
+    main.o                    src/main.s(3350)
+copydata (copydata.o):
+    crt0.o                    crt0.s(9)
+decsp4 (decsp4.o):
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+decsp5 (decsp5.o):
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+decsp6 (decsp6.o):
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+donelib (condes.o):
+    crt0.o                    crt0.s(9)
+incsp1 (incsp1.o):
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+incsp2 (incsp2.o):
+    staspidx.o                staspidx.s(8)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+incsp5 (incsp5.o):
+    main.o                    src/main.s(3350)
+initlib (condes.o):
+    crt0.o                    crt0.s(9)
+mulax10 (mulax10.o):
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+mulax3 (mulax3.o):
+    main.o                    src/main.s(3350)
+negax (neg.o):
+    main.o                    src/main.s(3350)
+popa (popa.o):
+    asmaccel.o                src/asmaccel.s(582)
+    asmaccel.o                src/asmaccel.s(582)
+popax (incsp2.o):
+    asmaccel.o                src/asmaccel.s(582)
+    asmaccel.o                src/asmaccel.s(582)
+    asmaccel.o                src/asmaccel.s(582)
+    asmaccel.o                src/asmaccel.s(582)
+    asmaccel.o                src/asmaccel.s(582)
+    asmaccel.o                src/asmaccel.s(582)
+    asmaccel.o                src/asmaccel.s(582)
+    asmaccel.o                src/asmaccel.s(582)
+    asmaccel.o                src/asmaccel.s(582)
+    asmaccel.o                src/asmaccel.s(582)
+    asmaccel.o                src/asmaccel.s(582)
+ptr1 (zeropage.o):
+    zerobss.o                 zerobss.s(9)
+    copydata.o                copydata.s(9)
+    staspidx.o                staspidx.s(9)
+    mulax3.o                  mulax3.s(8)
+    mulax10.o                 mulax10.s(9)
+    asmaccel.o                src/asmaccel.s(4)
+    main.o                    src/main.s(11)
+ptr2 (zeropage.o):
+    copydata.o                copydata.s(9)
+    asmaccel.o                src/asmaccel.s(4)
+    main.o                    src/main.s(11)
+pusha (pusha.o):
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+pusha0 (pushax.o):
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+pushax (pushax.o):
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+shlax2 (aslax2.o):
+    main.o                    src/main.s(3350)
+shlax4 (aslax4.o):
+    main.o                    src/main.s(3350)
+shrax1 (shrax1.o):
+    main.o                    src/main.s(3350)
+sp (zeropage.o):
+    addysp.o                  addysp.s(8)
+    crt0.o                    D:\Program Files (x86)\cc65\asminc/zeropage.inc(11)
+    subeqsp.o                 subeqsp.s(8)
+    staspidx.o                staspidx.s(9)
+    pushax.o                  pushax.s(8)
+    pusha.o                   pusha.s(8)
+    popa.o                    popa.s(8)
+    incsp2.o                  incsp2.s(8)
+    incsp1.o                  incsp1.s(8)
+    icmp.o                    icmp.s(9)
+    decsp6.o                  decsp6.s(8)
+    decsp5.o                  decsp5.s(8)
+    decsp4.o                  decsp4.s(8)
+    addeqsp.o                 addeqsp.s(8)
+    main.o                    src/main.s(10)
+sreg (zeropage.o):
+    icmp.o                    icmp.s(9)
+    main.o                    src/main.s(10)
+staspidx (staspidx.o):
+    main.o                    src/main.s(3350)
+    main.o                    src/main.s(3350)
+subeqysp (subeqsp.o):
+    main.o                    src/main.s(3350)
+tmp1 (zeropage.o):
+    copydata.o                copydata.s(9)
+    staspidx.o                staspidx.s(9)
+    shrax1.o                  shrax1.s(8)
+    asrax4.o                  asrax4.s(9)
+    asrax2.o                  asrax2.s(8)
+    asrax1.o                  asrax1.s(8)
+    aslax4.o                  aslax4.s(8)
+    aslax2.o                  aslax2.s(8)
+    asmaccel.o                src/asmaccel.s(5)
+    main.o                    src/main.s(11)
+tmp2 (zeropage.o):
+    asmaccel.o                src/asmaccel.s(5)
+tmp3 (zeropage.o):
+    asmaccel.o                src/asmaccel.s(5)
+tmp4 (zeropage.o):
+    asmaccel.o                src/asmaccel.s(5)
+tosicmp (icmp.o):
+    main.o                    src/main.s(3350)
+zerobss (zerobss.o):
+    crt0.o                    crt0.s(9)
+

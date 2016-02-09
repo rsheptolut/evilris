@@ -1,0 +1,18 @@
+ca65 V2.13.9 - (C) Copyright 1998-2011 Ullrich von Bassewitz
+Main file   : src/graphics.s
+Current file: src/graphics.s
+
+000000r 1               .segment "CHR"
+000000r 1  00 00 00 00      .incbin "gfx/tiles.chr"
+000004r 1  00 00 00 00  
+000008r 1  00 00 00 00  
+002000r 1               .segment "CODE"
+000000r 1               .export _nt_title_screen_rlec
+000000r 1               .export _nt_game_screen_rlec
+000000r 1  30 01 00 61  _nt_title_screen_rlec:    .incbin "titlescreen.cnt"
+000004r 1  01 04 00 01  
+000008r 1  01 01 00 02  
+000132r 1  7C 02 0F 40  _nt_game_screen_rlec:   .incbin "gamescreen.cnt"
+000136r 1  1C 01 1B 01  
+00013Ar 1  10 02 14 01  
+000132r 1               

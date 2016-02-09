@@ -1,0 +1,107 @@
+Modules list:
+-------------
+header.o:
+    HEADER            Offs = 000000   Size = 000008
+main.o:
+    CODE              Offs = 000000   Size = 00001C
+graphics.o:
+    CHR               Offs = 000000   Size = 002000
+../../knes/knes.lib(condes.o):
+    CODE              Offs = 00001C   Size = 00000C
+    DATA              Offs = 000000   Size = 000025
+    INIT              Offs = 000000   Size = 00000C
+../../knes/knes.lib(zeropage.o):
+    ZEROPAGE          Offs = 000000   Size = 00001A
+../../knes/knes.lib(copydata.o):
+    CODE              Offs = 000028   Size = 00002D
+../../knes/knes.lib(zerobss.o):
+    INIT              Offs = 00000C   Size = 000023
+../../knes/knes.lib(crt0.o):
+    ZEROPAGE          Offs = 00001A   Size = 000005
+    STARTUP           Offs = 000000   Size = 0000C6
+    VECTORS           Offs = 000000   Size = 000006
+
+
+Segment list:
+-------------
+Name                  Start   End     Size
+--------------------------------------------
+CHR                   000000  001FFF  002000
+HEADER                000000  000007  000008
+ZEROPAGE              000000  00001E  00001F
+DATA                  000300  000324  000025
+STARTUP               008000  0080C5  0000C6
+INIT                  0080C6  0080F4  00002F
+CODE                  008100  008154  000055
+VECTORS               00FFFA  00FFFF  000006
+
+
+Exports list:
+-------------
+__BSS_RUN__               000325 RLA    __BSS_SIZE__              000000 REA    
+__CONSTRUCTOR_COUNT__     000000 REA    __CONSTRUCTOR_TABLE__     00817A RLA    
+__DATA_LOAD__             008155 RLA    __DATA_RUN__              000300 RLA    
+__DATA_SIZE__             000025 REA    __DESTRUCTOR_COUNT__      000000 REA    
+__DESTRUCTOR_TABLE__      00817A RLA    __RAM_SIZE__              000500 REA    
+__RAM_START__             000300 RLA    __STARTUP__               000001 REA    
+__ZEROPAGE_LOAD__         00817A RLA    __ZEROPAGE_RUN__          000000 RLA    
+__ZEROPAGE_SIZE__         00001F REA    _main                     008100 RLA    
+copydata                  008128 RLA    donelib                   00811C RLA    
+initlib                   0080C6 RLA    ptr1                      000008 RLZ    
+ptr2                      00000A RLZ    sp                        000000 RLZ    
+tmp1                      000010 RLZ    zerobss                   0080D2 RLA    
+
+
+
+Imports list:
+-------------
+__BSS_RUN__ ([linker generated]):
+    zerobss.o                 zerobss.s(8)
+__BSS_SIZE__ ([linker generated]):
+    zerobss.o                 zerobss.s(8)
+__CONSTRUCTOR_COUNT__ ([linker generated]):
+    condes.o                  condes.s(18)
+__CONSTRUCTOR_TABLE__ ([linker generated]):
+    condes.o                  condes.s(18)
+__DATA_LOAD__ ([linker generated]):
+    copydata.o                copydata.s(8)
+__DATA_RUN__ ([linker generated]):
+    copydata.o                copydata.s(8)
+__DATA_SIZE__ ([linker generated]):
+    copydata.o                copydata.s(8)
+__DESTRUCTOR_COUNT__ ([linker generated]):
+    condes.o                  condes.s(19)
+__DESTRUCTOR_TABLE__ ([linker generated]):
+    condes.o                  condes.s(19)
+__RAM_SIZE__ ([linker generated]):
+    crt0.o                    crt0.s(5)
+__RAM_START__ ([linker generated]):
+    crt0.o                    crt0.s(5)
+__STARTUP__ (crt0.o):
+    main.o                    src/main.s(13)
+__ZEROPAGE_LOAD__ ([linker generated]):
+    crt0.o                    crt0.s(7)
+__ZEROPAGE_RUN__ ([linker generated]):
+    crt0.o                    crt0.s(7)
+__ZEROPAGE_SIZE__ ([linker generated]):
+    crt0.o                    crt0.s(7)
+_main (main.o):
+    crt0.o                    crt0.s(2)
+copydata (copydata.o):
+    crt0.o                    crt0.s(9)
+donelib (condes.o):
+    crt0.o                    crt0.s(9)
+initlib (condes.o):
+    crt0.o                    crt0.s(9)
+ptr1 (zeropage.o):
+    zerobss.o                 zerobss.s(9)
+    copydata.o                copydata.s(9)
+ptr2 (zeropage.o):
+    copydata.o                copydata.s(9)
+sp (zeropage.o):
+    crt0.o                    D:\Program Files (x86)\cc65\asminc/zeropage.inc(11)
+tmp1 (zeropage.o):
+    copydata.o                copydata.s(9)
+zerobss (zerobss.o):
+    crt0.o                    crt0.s(9)
+

@@ -1,0 +1,9 @@
+#!/bin/bash
+# Make standard PET Tetris
+cc65 -t pet -O -T tetris.c
+ca65 -t pet tetris.s
+cc65 -t pet -O -T platform.c
+ca65 -t pet platform.s
+ca65 -t pet tetris_funcs.asm
+cl65 -t pet tetris.o platform.o tetris_funcs.o -m tetris.map -o exe/tetris
+

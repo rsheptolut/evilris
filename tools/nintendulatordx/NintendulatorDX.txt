@@ -1,0 +1,10 @@
+NintendulatorDX v0.33
+by thefox//aspekt 2010-2011
+
+Based on Nintendulator SVN revision 1223.
+
+Working Visual Studio 2010 project is in the source
+directory "msvc100-dx".
+
+Usage instructions can be found at
+http://nesdev.parodius.com/bbs/viewtopic.php?t=6773

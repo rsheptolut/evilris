@@ -1,0 +1,9 @@
+#!/bin/bash
+# Make DACTETRIS
+cc65 -t pet -O -T -DDAC_TETRIS tetris.c
+ca65 -t pet tetris.s
+cc65 -t pet -O -T -DDAC_TETRIS platform.c
+ca65 -t pet platform.s
+ca65 -t pet -DDAC_TETRIS tetris_funcs.asm
+cl65 -t pet tetris.o platform.o tetris_funcs.o -m dactetris.map -o exe/dactetris
+

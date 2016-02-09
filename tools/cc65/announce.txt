@@ -1,0 +1,8 @@
+THIS IS A DEVELOPMENT SNAPSHOT OF CC65!
+
+This version may or may not work for you. Please see
+
+      http://www.cc65.org/
+
+for more information and stable builds.
+

@@ -1,0 +1,163 @@
+Modules list:
+-------------
+header.o:
+    HEADER            Offs = 000000   Size = 000008
+main.o:
+    CODE              Offs = 000000   Size = 000056
+    BSS               Offs = 000000   Size = 000003
+muse-wrap.o:
+    CODE              Offs = 000100   Size = 001F92
+    BSS               Offs = 000003   Size = 000100
+    ZEROPAGE          Offs = 000000   Size = 000007
+snd-data-wrap.o:
+    RODATA            Offs = 000000   Size = 00044E
+    DPCM              Offs = 000000   Size = 0007A1
+../../knes/knes.lib(condes.o):
+    CODE              Offs = 002092   Size = 00000C
+    DATA              Offs = 000000   Size = 000025
+    INIT              Offs = 000000   Size = 00000C
+../../knes/knes.lib(popa.o):
+    CODE              Offs = 00209E   Size = 00000C
+../../knes/knes.lib(pusha.o):
+    CODE              Offs = 0020AA   Size = 000016
+../../knes/knes.lib(zeropage.o):
+    ZEROPAGE          Offs = 000007   Size = 00001A
+../../knes/knes.lib(copydata.o):
+    CODE              Offs = 0020C0   Size = 00002D
+../../knes/knes.lib(zerobss.o):
+    INIT              Offs = 00000C   Size = 000023
+../../knes/knes.lib(crt0.o):
+    ZEROPAGE          Offs = 000021   Size = 000005
+    STARTUP           Offs = 000000   Size = 0000C6
+    VECTORS           Offs = 000000   Size = 000006
+../../knes/knes.lib(knes.o):
+    CODE              Offs = 0020ED   Size = 000027
+../../knes/knes.lib(_read_joy.o):
+    CODE              Offs = 002120   Size = 000076
+    ZEROPAGE          Offs = 000026   Size = 000003
+
+
+Segment list:
+-------------
+Name                  Start   End     Size
+--------------------------------------------
+HEADER                000000  000007  000008
+ZEROPAGE              000000  000028  000029
+DATA                  000300  000324  000025
+BSS                   000325  000427  000103
+STARTUP               008000  0080C5  0000C6
+INIT                  0080C6  0080F4  00002F
+CODE                  008100  00A295  002196
+RODATA                00A2BB  00A708  00044E
+DPCM                  00F000  00F7A0  0007A1
+VECTORS               00FFFA  00FFFF  000006
+
+
+Exports list:
+-------------
+_MUSE_init                0098A8 RLA    _MUSE_isSfxPlaying        00A18E RLA    
+_MUSE_setFlags            009AFA RLA    _MUSE_startMusic          009920 RLA    
+_MUSE_startSfx            00A183 RLA    _MUSE_stopSfx             00A18A RLA    
+_MUSE_update              009BFE RLA    __BSS_RUN__               000325 RLA    
+__BSS_SIZE__              000103 REA    __CONSTRUCTOR_COUNT__     000000 REA    
+__CONSTRUCTOR_TABLE__     00A709 RLA    __DATA_LOAD__             00A296 RLA    
+__DATA_RUN__              000300 RLA    __DATA_SIZE__             000025 REA    
+__DESTRUCTOR_COUNT__      000000 REA    __DESTRUCTOR_TABLE__      00A709 RLA    
+__RAM_SIZE__              000500 REA    __RAM_START__             000300 RLA    
+__STARTUP__               000001 REA    __ZEROPAGE_LOAD__         00A709 RLA    
+__ZEROPAGE_RUN__          000000 RLA    __ZEROPAGE_SIZE__         000029 REA    
+__nmi_count               000021 RLZ    __read_joy0               00A258 RLA    
+__read_joy1               00A277 RLA    _main                     008100 RLA    
+_read_joy                 00A1FF RLA    _snd_data                 00A2BB RLA    
+_wait_vblank              00A1ED RLA    copydata                  00A1C0 RLA    
+donelib                   00A192 RLA    initlib                   0080C6 RLA    
+popa                      00A19E RLA    ptr1                      00000F RLZ    
+ptr2                      000011 RLZ    pusha                     00A1AE RLA    
+sp                        000007 RLZ    tmp1                      000017 RLZ    
+zerobss                   0080D2 RLA    
+
+
+Imports list:
+-------------
+_MUSE_init (muse-wrap.o):
+    main.o                    src/main.s(16)
+_MUSE_isSfxPlaying (muse-wrap.o):
+    main.o                    src/main.s(21)
+_MUSE_setFlags (muse-wrap.o):
+    main.o                    src/main.s(22)
+_MUSE_startMusic (muse-wrap.o):
+    main.o                    src/main.s(18)
+_MUSE_startSfx (muse-wrap.o):
+    main.o                    src/main.s(19)
+_MUSE_stopSfx (muse-wrap.o):
+    main.o                    src/main.s(20)
+_MUSE_update (muse-wrap.o):
+    main.o                    src/main.s(17)
+__BSS_RUN__ ([linker generated]):
+    zerobss.o                 zerobss.s(8)
+__BSS_SIZE__ ([linker generated]):
+    zerobss.o                 zerobss.s(8)
+__CONSTRUCTOR_COUNT__ ([linker generated]):
+    condes.o                  condes.s(18)
+__CONSTRUCTOR_TABLE__ ([linker generated]):
+    condes.o                  condes.s(18)
+__DATA_LOAD__ ([linker generated]):
+    copydata.o                copydata.s(8)
+__DATA_RUN__ ([linker generated]):
+    copydata.o                copydata.s(8)
+__DATA_SIZE__ ([linker generated]):
+    copydata.o                copydata.s(8)
+__DESTRUCTOR_COUNT__ ([linker generated]):
+    condes.o                  condes.s(19)
+__DESTRUCTOR_TABLE__ ([linker generated]):
+    condes.o                  condes.s(19)
+__RAM_SIZE__ ([linker generated]):
+    crt0.o                    crt0.s(5)
+__RAM_START__ ([linker generated]):
+    crt0.o                    crt0.s(5)
+__STARTUP__ (crt0.o):
+    main.o                    src/main.s(13)
+__ZEROPAGE_LOAD__ ([linker generated]):
+    crt0.o                    crt0.s(7)
+__ZEROPAGE_RUN__ ([linker generated]):
+    crt0.o                    crt0.s(7)
+__ZEROPAGE_SIZE__ ([linker generated]):
+    crt0.o                    crt0.s(7)
+__nmi_count (crt0.o):
+    knes.o                    knes.s(1)
+__read_joy0 (_read_joy.o):
+    knes.o                    knes.s(26)
+__read_joy1 (_read_joy.o):
+    knes.o                    knes.s(27)
+_main (main.o):
+    crt0.o                    crt0.s(2)
+_read_joy (knes.o):
+    main.o                    src/main.s(15)
+_snd_data (snd-data-wrap.o):
+    main.o                    src/main.s(23)
+_wait_vblank (knes.o):
+    main.o                    src/main.s(14)
+copydata (copydata.o):
+    crt0.o                    crt0.s(9)
+donelib (condes.o):
+    crt0.o                    crt0.s(9)
+initlib (condes.o):
+    crt0.o                    crt0.s(9)
+popa (popa.o):
+    muse-wrap.o               src/muse-wrap.s(18)
+ptr1 (zeropage.o):
+    zerobss.o                 zerobss.s(9)
+    copydata.o                copydata.s(9)
+ptr2 (zeropage.o):
+    copydata.o                copydata.s(9)
+pusha (pusha.o):
+    main.o                    src/main.s(81)
+sp (zeropage.o):
+    crt0.o                    D:\Program Files (x86)\cc65\asminc/zeropage.inc(11)
+    pusha.o                   pusha.s(8)
+    popa.o                    popa.s(8)
+tmp1 (zeropage.o):
+    copydata.o                copydata.s(9)
+zerobss (zerobss.o):
+    crt0.o                    crt0.s(9)
+

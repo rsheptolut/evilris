@@ -1,0 +1,9 @@
+#!/bin/bash
+# Make 8K (cut-down) version of PET Tetris
+cc65 -t pet -O -T -DTETRIS_8K tetris.c
+ca65 -t pet tetris.s
+cc65 -t pet -O -T -DTETRIS_8K platform.c
+ca65 -t pet platform.s
+ca65 -t pet -DTETRIS_8K tetris_funcs.asm
+cl65 -t pet tetris.o platform.o tetris_funcs.o -m 8ktetris.map -o exe/8ktetris
+
